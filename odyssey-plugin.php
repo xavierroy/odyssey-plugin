@@ -24,5 +24,12 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 /*
+ * Table of Contents
+ * 1. Shortcode for Search Form
+*/
+
+/*
+1. Shortcode for Search Form
+The [wpsearch] shortcode will add a search form anywhere in a post or page.
 */
 add_shortcode('wpsearch', 'get_search_form');
