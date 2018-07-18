@@ -23,4 +23,6 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-?>
+/*
+*/
+add_shortcode('wpsearch', 'get_search_form');
