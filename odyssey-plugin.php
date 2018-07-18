@@ -9,7 +9,7 @@
  * @wordpress-plugin
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Tweaks and hacks for this site...
  * Version:           1.0.0
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
@@ -29,6 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 /*
  * Table of Contents
  * 1. Shortcode for Search Form
+ * 2. WordPress filter to approve webmentions from previously-approved domains
 */
 
 /*
@@ -36,3 +37,45 @@ if ( ! defined( 'WPINC' ) ) {
 The [wpsearch] shortcode will add a search form anywhere in a post or page.
 */
 add_shortcode('wpsearch', 'get_search_form');
+/* --1-- */
+
+
+/*
+2. WordPress filter to approve webmentions from previously-approved domains
+Source: https://gist.github.com/gRegorLove/8215cb9c9584b364aaf4ef2999416f56
+*/
+if ( !function_exists('indieweb_check_webmention') ) {
+
+	/**
+	 * Using the webmention_source_url, approve webmentions that have been received from previously-
+	 * approved domains. For example, once you approve a webmention from http://example.com/post,
+	 * future webmentions from http://example.com will be automatically approved.
+	 * Recommend placing in your theme's functions.php
+	 *
+	 * Based on check_comment()
+	 * @see https://core.trac.wordpress.org/browser/tags/4.9/src/wp-includes/comment.php#L113
+	 */
+	function indieweb_check_webmention($approved, $commentdata) {
+		global $wpdb;
+
+		if ( 1 == get_option('comment_whitelist')) {
+
+			if ( !empty($commentdata['comment_meta']['webmention_source_url']) ) {
+				$like_domain = sprintf('%s://%s%%', parse_url($commentdata['comment_meta']['webmention_source_url'], PHP_URL_SCHEME), parse_url($commentdata['comment_meta']['webmention_source_url'], PHP_URL_HOST));
+
+				$ok_to_comment = $wpdb->get_var( $wpdb->prepare( "SELECT comment_approved FROM $wpdb->comments WHERE comment_author = %s AND comment_author_url LIKE %s AND comment_approved = '1' LIMIT 1", $commentdata['comment_author'], $like_domain ) );
+
+				if ( 1 == $ok_to_comment ) {
+					return 1;
+				}
+
+			}
+
+		}
+
+		return $approved;
+	}
+
+	add_filter('pre_comment_approved', 'indieweb_check_webmention', '99', 2);
+}
+/* --2-- */
