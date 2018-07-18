@@ -31,6 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
  * 1. Shortcode for Search Form
  * 2. WordPress filter to approve webmentions from previously-approved domains
   * 3. Add categories and tags from slug
+	* 4. Replace blank titles with timestamps
 */
 
 /*
@@ -119,3 +120,19 @@ add_filter('wp_get_object_terms', function($terms, $object_ids, $taxonomies, $ar
 }, 10, 4);
 
 /* ---3--- */
+
+/*
+4. Replace blank titles with timestamps
+Source: https://github.com/colin-walker/wordpress-blank-title
+*/
+function filter_title_save_pre( $title ) {
+    if ( $title == "" ) {
+      date_default_timezone_set("Asia/Kolkotta");
+      return date( 'd/m/Y, H:i' );
+    } else {
+      return $title;
+    }
+}
+
+add_filter( 'title_save_pre', 'filter_title_save_pre', 10, 1 );
+/* ---4 ---*/
