@@ -30,6 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Table of Contents
  * 1. Shortcode for Search Form
  * 2. WordPress filter to approve webmentions from previously-approved domains
+  * 3. Add categories and tags from slug
 */
 
 /*
@@ -79,3 +80,42 @@ if ( !function_exists('indieweb_check_webmention') ) {
 	add_filter('pre_comment_approved', 'indieweb_check_webmention', '99', 2);
 }
 /* --2-- */
+
+
+/*
+3. Set default category / tags for a new WordPress posts when using bookmarklets
+Source: https://gist.github.com/davejamesmiller/1966543
+*/
+
+
+add_filter('wp_get_object_terms', function($terms, $object_ids, $taxonomies, $args)
+{
+    if (!$terms && basename($_SERVER['PHP_SELF']) == 'post-new.php') {
+        // Category - note: only 1 category is supported currently
+        if ($taxonomies == "'category'" && isset($_REQUEST['category'])) {
+            $id = get_cat_id($_REQUEST['category']);
+            if ($id) {
+                return array($id);
+            }
+        }
+        // Tags
+        if ($taxonomies == "'post_tag'" && isset($_REQUEST['tags'])) {
+            $tags = $_REQUEST['tags'];
+            $tags = is_array($tags) ? $tags : explode( ',', trim($tags, " \n\t\r\0\x0B,") );
+            $term_ids = array();
+            foreach ($tags as $term) {
+                if ( !$term_info = term_exists($term, 'post_tag') ) {
+                    // Skip if a non-existent term ID is passed.
+                    if ( is_int($term) )
+                        continue;
+                    $term_info = wp_insert_term($term, 'post_tag');
+                }
+                $term_ids[] = $term_info['term_id'];
+            }
+            return $term_ids;
+        }
+    }
+    return $terms;
+}, 10, 4);
+
+/* ---3--- */
