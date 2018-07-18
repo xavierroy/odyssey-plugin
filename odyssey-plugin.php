@@ -17,6 +17,9 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       odyssey-plugin.php
  * Domain Path:       /languages
+ * GitHub Plugin URI:	xavierroy/odyssey-plugin
+ * GitHub Plugin URI:	https://github.com/xavierroy/odyssey-plugin
+
  */
 
 // If this file is called directly, abort.
