@@ -127,7 +127,7 @@ Source: https://github.com/colin-walker/wordpress-blank-title
 */
 function filter_title_save_pre( $title ) {
     if ( $title == "" ) {
-      date_default_timezone_set("Asia/Kolkotta");
+      date_default_timezone_set("Asia/Kolkata");
       return date( 'd/m/Y, H:i' );
     } else {
       return $title;
