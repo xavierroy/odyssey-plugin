@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.4
+ * Version:           1.0.6
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -30,8 +30,8 @@ if ( ! defined( 'WPINC' ) ) {
  * Table of Contents
  * 1. Shortcode for Search Form
  * 2. WordPress filter to approve webmentions from previously-approved domains
-  * 3. Add categories and tags from slug
-	* 4. Replace blank titles with timestamps
+ * 3. Add categories and tags from slug
+ * 4. Replace blank titles with timestamps
 */
 
 /*
