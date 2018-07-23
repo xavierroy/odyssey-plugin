@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.6
+ * Version:           1.0.7
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -32,6 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
  * 2. WordPress filter to approve webmentions from previously-approved domains
  * 3. Add categories and tags from slug
  * 4. Replace blank titles with timestamps
+ * 5. Disable Self Pingbacks
 */
 
 /*
@@ -79,6 +80,13 @@ if ( !function_exists('indieweb_check_webmention') ) {
 	}
 
 	add_filter('pre_comment_approved', 'indieweb_check_webmention', '99', 2);
+	function disable_self_trackback( &$links ) {
+  foreach ( $links as $l => $link )
+        if ( 0 === strpos( $link, get_option( 'home' ) ) )
+            unset($links[$l]);
+}
+
+add_action( 'pre_ping', 'disable_self_trackback' );
 }
 /* --2-- */
 
@@ -133,6 +141,19 @@ function filter_title_save_pre( $title ) {
       return $title;
     }
 }
-
-add_filter( 'title_save_pre', 'filter_title_save_pre', 10, 1 );
 /* ---4 ---*/
+/*
+5. Disable Self Pingbacks
+Source: https://www.wpstuffs.com/disable-self-pingbacks/
+*/
+add_filter( 'title_save_pre', 'filter_title_save_pre', 10, 1 );
+
+
+function disable_self_trackback( &$links ) {
+  foreach ( $links as $l => $link )
+        if ( 0 === strpos( $link, get_option( 'home' ) ) )
+            unset($links[$l]);
+}
+
+add_action( 'pre_ping', 'disable_self_trackback' );
+/* ---5 ---*/
