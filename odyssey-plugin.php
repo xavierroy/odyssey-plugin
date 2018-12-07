@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.10
+ * Version:           1.0.11
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -33,6 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
  * 3. Add categories and tags from slug
  * 4. Replace blank titles with timestamps
  * 5. Disable Self Pingbacks
+ * 6. Disable Gutenberg
 */
 
 /*
@@ -150,3 +151,9 @@ function disable_self_trackback( &$links ) {
 
 add_action( 'pre_ping', 'disable_self_trackback' );
 /* ---5 ---*/
+
+/*
+6. Disable Gutenberg
+Source: https://github.com/dimadin/disable-block-editor
+*/
+add_filter( 'use_block_editor_for_post', '__return_false', 666 );
