@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.11
+ * Version:           1.0.12
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -131,7 +131,7 @@ Source: https://github.com/colin-walker/wordpress-blank-title
 function filter_title_save_pre( $title ) {
     if ( $title == "" ) {
       date_default_timezone_set("Asia/Kolkata");
-      return date( 'y-m-d-h:m:s' );
+      return date( 'Ymd-hm' );
     } else {
       return $title;
     }
