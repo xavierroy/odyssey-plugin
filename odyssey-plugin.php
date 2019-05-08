@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.13
+ * Version:           1.0.13.1
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -161,10 +161,10 @@ add_filter( 'use_block_editor_for_post', '__return_false', 666 );
 
 
 /* add emojis */
-add_filter( ‘the_title’, ‘addemoji_book’, 10, 2 );
+add_filter( 'the_title', 'addemoji_book', 10, 2 );
 function addemoji_book( $title, $id ) {
-if( in_category( ‘Books’, $id ) ) {
-$title = ‘📚 ‘ . $title;
+if( in_category( 'Books', $id ) ) {
+$title = '📚' . $title;
 }
 return $title;
 }
