@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.12
+ * Version:           1.0.13
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -34,6 +34,7 @@ if ( ! defined( 'WPINC' ) ) {
  * 4. Replace blank titles with timestamps
  * 5. Disable Self Pingbacks
  * 6. Disable Gutenberg
+ * 7. Add emojis
 */
 
 /*
@@ -157,3 +158,13 @@ add_action( 'pre_ping', 'disable_self_trackback' );
 Source: https://github.com/dimadin/disable-block-editor
 */
 add_filter( 'use_block_editor_for_post', '__return_false', 666 );
+
+
+/* add emojis */
+add_filter( ‘the_title’, ‘addemoji_book’, 10, 2 );
+function addemoji_book( $title, $id ) {
+if( in_category( ‘Books’, $id ) ) {
+$title = ‘📚 ‘ . $title;
+}
+return $title;
+}
