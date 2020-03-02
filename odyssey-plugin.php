@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.13.2
+ * Version:           1.0.14.2
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -35,6 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * 5. Disable Self Pingbacks
  * 6. Disable Gutenberg
  * 7. Add emojis
+ * 8. Identify Post kinds in Feeds
 */
 
 /*
@@ -159,8 +160,11 @@ Source: https://github.com/dimadin/disable-block-editor
 */
 add_filter( 'use_block_editor_for_post', '__return_false', 666 );
 
+/* ---6--- */
 
-/* add emojis */
+/*
+7.  add emojis 
+*/
 add_filter( 'the_title', 'addemojis', 10, 2 );
 function addemojis( $title, $id ) {
 if( in_category( 'Books', $id ) ) {
@@ -172,18 +176,27 @@ elseif (in_category( 'Television', $id )) {
 elseif (in_category( 'Movies', $id )) {
 	$title = '🎬 ' . $title;
 }
+elseif (in_category( 'Listens', $id )) {
+	$title = '🎧 ' . $title;
+}
 return $title;
 }
+
+/* ---7---  */
+
 /*
-switch ($i) {
-    case "apple":
-        echo "i is apple";
-        break;
-    case "bar":
-        echo "i is bar";
-        break;
-    case "cake":
-        echo "i is cake";
-        break;
-}
+8. Add Post Kinds to Feeds
+Source: https://danq.me/2020/03/01/post-kinds-rss/
 */
+
+// Make titles in RSS feed be prefixed by the Kind of the post.
+function add_kind_to_rss_post_title(){
+	$kinds = wp_get_post_terms( get_the_ID(), 'kind' );
+	if( ! isset( $kinds ) || empty( $kinds ) ) return get_the_title(); // sanity-check.
+	$kind = $kinds[0]->name;
+	$title = get_the_title();
+	return trim( "[{$kind}] {$title}" );
+}
+add_filter( 'the_title_rss', 'add_kind_to_rss_post_title', 4 ); // priority 4 to ensure it happens BEFORE default escaping filters.
+
+/* ---8--- */
