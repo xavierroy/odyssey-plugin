@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.15.2
+ * Version:           1.0.15.3
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -37,6 +37,7 @@ if ( ! defined( 'WPINC' ) ) {
  * 7. Add emojis
  * 8. Identify Post kinds in Feeds
  * 9. Add tagmojis as a taxonomy
+ * 10. Remove Wordpress Emojis
 */
 
 /*
@@ -249,3 +250,15 @@ add_action( 'init', 'tagmoji', 0 );
 
 }
 /* ---9--- */
+
+/* 
+10. Remove Wordpress Emojis
+https://www.denisbouquet.com/remove-wordpress-emoji-code/
+*/
+
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('wp_print_styles', 'print_emoji_styles');
+
+remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+remove_action( 'admin_print_styles', 'print_emoji_styles' );
+/* ---10 --- */ 
