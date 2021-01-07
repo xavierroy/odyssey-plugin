@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.15.3
+ * Version:           1.0.15.4
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -38,6 +38,7 @@ if ( ! defined( 'WPINC' ) ) {
  * 8. Identify Post kinds in Feeds
  * 9. Add tagmojis as a taxonomy
  * 10. Remove Wordpress Emojis
+ * 11. Add audience as a taxonomy
 */
 
 /*
@@ -262,3 +263,51 @@ remove_action('wp_print_styles', 'print_emoji_styles');
 remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
 remove_action( 'admin_print_styles', 'print_emoji_styles' );
 /* ---10 --- */ 
+
+/* 
+11. Add audience as a taxonomy
+*/
+
+if ( ! function_exists( 'audience' ) ) {
+
+	// Register Custom Taxonomy
+	function audience() {
+	
+		$labels = array(
+			'name'                       => _x( 'Audience', 'Taxonomy General Name', 'text_domain' ),
+			'singular_name'              => _x( 'Audience', 'Taxonomy Singular Name', 'text_domain' ),
+			'menu_name'                  => __( 'Audience', 'text_domain' ),
+			'all_items'                  => __( 'All Audience', 'text_domain' ),
+			'parent_item'                => __( 'Parent Audience', 'text_domain' ),
+			'parent_item_colon'          => __( 'Parent Audience:', 'text_domain' ),
+			'new_item_name'              => __( 'New Audience Name', 'text_domain' ),
+			'add_new_item'               => __( 'Add New Audience', 'text_domain' ),
+			'edit_item'                  => __( 'Edit Audience', 'text_domain' ),
+			'update_item'                => __( 'Update Audience', 'text_domain' ),
+			'view_item'                  => __( 'View Audience', 'text_domain' ),
+			'separate_items_with_commas' => __( 'Separate audience with commas', 'text_domain' ),
+			'add_or_remove_items'        => __( 'Add or remove audience', 'text_domain' ),
+			'choose_from_most_used'      => __( 'Choose from the most used', 'text_domain' ),
+			'popular_items'              => __( 'Popular Audience', 'text_domain' ),
+			'search_items'               => __( 'Search Audience', 'text_domain' ),
+			'not_found'                  => __( 'Not Found', 'text_domain' ),
+			'no_terms'                   => __( 'No items', 'text_domain' ),
+			'items_list'                 => __( 'Audience list', 'text_domain' ),
+			'items_list_navigation'      => __( 'Audience list navigation', 'text_domain' ),
+		);
+		$args = array(
+			'labels'                     => $labels,
+			'hierarchical'               => false,
+			'public'                     => true,
+			'show_ui'                    => true,
+			'show_admin_column'          => true,
+			'show_in_nav_menus'          => true,
+			'show_tagcloud'              => true,
+		);
+		register_taxonomy( 'audience', array( 'post' ), $args );
+	
+	}
+	add_action( 'init', 'audience', 0 );
+	
+	}
+	/* ---11--- */
