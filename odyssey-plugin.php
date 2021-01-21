@@ -10,7 +10,7 @@
  * Plugin Name:       Odyssey - Site Enhancements
  * Plugin URI:        https://github.com/xavierroy/odyssey-plugin/
  * Description:       Tweaks and hacks for this site...
- * Version:           1.0.15.4
+ * Version:           1.0.15.5
  * Author:            Xavier Roy
  * Author URI:        https://xavierroy.com
  * License:           GPL-2.0+
@@ -181,6 +181,9 @@ elseif (in_category( 'Movies', $id )) {
 }
 elseif (in_category( 'Listens', $id )) {
 	$title = '🎧 ' . $title;
+}
+elseif (in_category( 'Sports', $id )) {
+	$title = '🏆 ' . $title;
 }
 return $title;
 }
